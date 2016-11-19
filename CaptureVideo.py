@@ -14,6 +14,7 @@ class VideoCapturer:
   filename = str()
   rawCapture = object()
   fifoFilters = []
+  snapRate = 20
   
   def __init__(self, _height, _width, mult, frame_rate):
     self.multiplier = mult
@@ -27,6 +28,7 @@ class VideoCapturer:
     self.filename = "temp.mp4"
 
   def runCam(self, loadFilters = False):
+    count = 0
     for frame in self.camera.capture_continuous(self.rawCapture, format="bgr", use_video_port=True):
       image = frame.array
       image = self.rotateImage(image, 270)      
@@ -34,7 +36,13 @@ class VideoCapturer:
       if loadFilters:
         for funct in self.fifoFilters:
           b = funct(b)
+      else:
+          b = image
       cv2.imshow("Frame", b)
+      count= count + 1
+      if (count > 0 and count % self.snapRate == 0):
+        cv2.imwrite(str(count) + ".png", b)
+      
       key = cv2.waitKey(1) & 0xFF
       self.rawCapture.truncate(0)
       if key == "ord":

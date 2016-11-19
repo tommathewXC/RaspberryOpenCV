@@ -6,3 +6,8 @@ Set up a basic FIFO image filter system using OpenCV on the raspberry pi using a
 ## Before 
 
 ![alt text](https://github.com/tommathewXC/RaspberryOpenCV/blob/master/pre.png)
+
+
+## After 
+
+![alt text](https://github.com/tommathewXC/RaspberryOpenCV/blob/master/post.png)

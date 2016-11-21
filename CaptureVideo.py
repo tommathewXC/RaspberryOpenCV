@@ -29,6 +29,7 @@ class VideoCapturer:
 
   def runCam(self, loadFilters = False):
     count = 0
+    prev = float()
     for frame in self.camera.capture_continuous(self.rawCapture, format="bgr", use_video_port=True):
       image = frame.array
       image = self.rotateImage(image, 270)      
@@ -38,8 +39,11 @@ class VideoCapturer:
           b = funct(b)
       else:
           b = image
-      cv2.imshow("Frame", b)
       count= count + 1
+      if count > 0:
+        b = 0.5 * (b + prev)
+      prev = b
+      cv2.imshow("Frame", b)
       if (count > 0 and count % self.snapRate == 0):
         cv2.imwrite(str(count) + ".png", b)
       
